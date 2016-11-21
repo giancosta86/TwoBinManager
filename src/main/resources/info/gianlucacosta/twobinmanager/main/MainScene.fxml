@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--^
+  ===========================================================================
+  TwoBinManager
+  ===========================================================================
+  Copyright (C) 2016 Gianluca Costa
+  ===========================================================================
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  ===========================================================================
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="mainPane" prefHeight="605.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.101"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+            <children>
+                <HBox fx:id="problemsPane" alignment="CENTER_LEFT" prefHeight="80.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="problemsHeader" styleClass="paneHeader" text="Problems">
+                            <HBox.margin>
+                                <Insets right="15.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#newProblem" text="New..."/>
+                        <Button mnemonicParsing="false" onAction="#editProblem" text="Edit..."/>
+                        <Button mnemonicParsing="false" onAction="#viewProblem" text="View..."/>
+                        <Button mnemonicParsing="false" onAction="#exportProblemBundle"
+                                text="Create problem bundle..."/>
+                        <Button mnemonicParsing="false" onAction="#exportStandardProblem"
+                                text="Export standard problem..."/>
+                        <Button mnemonicParsing="false" onAction="#removeProblem" text="Remove..."/>
+                        <Button mnemonicParsing="false" onAction="#removeAllProblems" text="Remove all..."/>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox fx:id="solutionsPane" alignment="CENTER_LEFT" prefHeight="80.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="solutionsHeader" styleClass="paneHeader" text="Solutions">
+                            <padding>
+                                <Insets right="15.0"/>
+                            </padding>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#viewSolutions" text="View..."/>
+                        <Button mnemonicParsing="false" onAction="#exportCsvSolutions" text="Export solution CSVs..."/>
+                        <Button mnemonicParsing="false" onAction="#removeProblemSolutions" text="Remove..."/>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox fx:id="importPane" alignment="CENTER_LEFT" prefHeight="185.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="importHeader" styleClass="paneHeader" text="Import">
+                            <padding>
+                                <Insets right="15.0"/>
+                            </padding>
+                        </Label>
+                        <Label fx:id="importLabel" alignment="CENTER" prefHeight="126.0" prefWidth="800.0"
+                               text="Drop one or more files (problem bundles, solution CSVs, standard problems, plugins...) on this area to import them"
+                               wrapText="true"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </padding>
+                </HBox>
+                <HBox fx:id="analyticsPane" alignment="CENTER_LEFT" prefHeight="80.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="analyticsHeader" styleClass="paneHeader" text="Analytics &amp; plugins">
+                            <padding>
+                                <Insets right="15.0"/>
+                            </padding>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#showBasicStats" text="Show basic statistics"/>
+                        <Button mnemonicParsing="false" onAction="#showAnalytics" text="Show analytics"/>
+                        <Button mnemonicParsing="false" onAction="#openPluginsFolder" text="Open plugins folder"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox fx:id="aboutPane" alignment="CENTER" prefHeight="80.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#showAboutBox" prefHeight="40.0" prefWidth="157.0"
+                        text="About..."/>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+            </padding>
+        </HBox>
+    </bottom>
+    <top>
+        <HBox fx:id="titlePane" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+            </padding>
+            <children>
+                <Label fx:id="titleLabel" text="Label"/>
+            </children>
+        </HBox>
+    </top>
+</BorderPane>
