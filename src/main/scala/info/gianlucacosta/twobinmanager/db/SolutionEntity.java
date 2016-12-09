@@ -56,6 +56,20 @@ public class SolutionEntity {
     )
     private ProblemEntity problem;
 
+
+    @Column(
+            nullable = true,
+            length = Integer.MAX_VALUE
+    )
+    private String solver;
+
+
+    @Column(
+            nullable = true
+    )
+    private Integer elapsedTimeInSeconds;
+
+
     @ElementCollection(
             fetch = FetchType.LAZY
     )
@@ -78,25 +92,19 @@ public class SolutionEntity {
     private Set<AnchoredBlockValue> blocks;
 
 
-    @Column(
-            nullable = true,
-            length = Integer.MAX_VALUE
-    )
-    private String solver;
-
-
     public SolutionEntity() {
     }
 
-    public SolutionEntity(UUID id, ProblemEntity problem, Set<AnchoredBlockValue> blocks, String solver) {
+    public SolutionEntity(UUID id, ProblemEntity problem, String solver, Integer elapsedTimeInSeconds, Set<AnchoredBlockValue> blocks) {
         this.id = id;
         this.problem = problem;
+
+        this.solver = solver;
+        this.elapsedTimeInSeconds = elapsedTimeInSeconds;
 
         this.blocks = Collections.unmodifiableSet(
                 blocks
         );
-
-        this.solver = solver;
     }
 
     public UUID getId() {
@@ -111,12 +119,16 @@ public class SolutionEntity {
         this.problem = problem;
     }
 
-    public Set<AnchoredBlockValue> getBlocks() {
-        return blocks;
-    }
-
     public String getSolver() {
         return solver;
+    }
+
+    public Integer getElapsedTimeInSeconds() {
+        return elapsedTimeInSeconds;
+    }
+
+    public Set<AnchoredBlockValue> getBlocks() {
+        return blocks;
     }
 
     @Override
@@ -126,12 +138,13 @@ public class SolutionEntity {
         SolutionEntity that = (SolutionEntity) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(problem, that.problem) &&
-                Objects.equals(blocks, that.blocks) &&
-                Objects.equals(solver, that.solver);
+                Objects.equals(solver, that.solver) &&
+                Objects.equals(elapsedTimeInSeconds, that.elapsedTimeInSeconds) &&
+                Objects.equals(blocks, that.blocks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, problem, blocks, solver);
+        return Objects.hash(id, problem, solver, elapsedTimeInSeconds, blocks);
     }
 }

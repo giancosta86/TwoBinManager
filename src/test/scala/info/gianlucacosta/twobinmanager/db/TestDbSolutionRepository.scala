@@ -22,11 +22,13 @@
 
 package info.gianlucacosta.twobinmanager.db
 
+import java.time.Duration
 import java.util.UUID
 import javax.persistence.{PersistenceException, RollbackException}
 
 import info.gianlucacosta.helios.jpa.Includes._
 import info.gianlucacosta.twobinmanager.db.DbConversions._
+import info.gianlucacosta.twobinpack.core.Problem
 import info.gianlucacosta.twobinpack.test.SimpleTestData._
 
 
@@ -192,5 +194,87 @@ class TestDbSolutionRepository extends DbTestBase {
     problemRepository.removeAll()
 
     solutionRepository.count() should be(0)
+  }
+
+
+  "Saving a solution whose elapsed time is more than 1 hour" should "work" in {
+    val problem =
+      ProblemA.copy(timeLimitInMinutesOption = Some(60 * 5))
+
+    problemRepository.add(problem)
+
+    val elapsedTime =
+      Duration.ofHours(3).plus(Duration.ofMinutes(19)).plus(Duration.ofSeconds(42))
+
+    val solution =
+      SolutionA1.copy(
+        problem =
+          problem,
+
+        elapsedTimeOption =
+          Some(
+            elapsedTime
+          )
+      )
+
+    solutionRepository.add(solution)
+  }
+
+
+  "Retrieving a solution whose elapsed time is more than 1 hour" should "work" in {
+    val problem =
+      ProblemA.copy(timeLimitInMinutesOption = Some(60 * 5))
+
+    problemRepository.add(problem)
+
+    val elapsedTime =
+      Duration.ofHours(3).plus(Duration.ofMinutes(19)).plus(Duration.ofSeconds(42))
+
+    val solution =
+      SolutionA1.copy(
+        problem =
+          problem,
+
+        elapsedTimeOption =
+          Some(
+            elapsedTime
+          )
+      )
+
+    solutionRepository.add(solution)
+
+    val retrievedSolution =
+      solutionRepository.findAll().head
+
+    retrievedSolution.elapsedTimeOption should be(Some(elapsedTime))
+  }
+
+
+  "Retrieving a solution whose elapsed time is the max time limit supported by a problem" should "work" in {
+    val problem =
+      ProblemA.copy(timeLimitInMinutesOption = Some(Problem.MaxTimeLimitInMinutes))
+
+    problemRepository.add(problem)
+
+    val elapsedTime =
+      Duration.ofMinutes(Problem.MaxTimeLimitInMinutes)
+
+    val solution =
+      SolutionA1.copy(
+        problem =
+          problem,
+
+        elapsedTimeOption =
+          Some(
+            elapsedTime
+          )
+      )
+
+    solutionRepository.add(solution)
+
+    val retrievedSolution =
+      solutionRepository.findAll().head
+
+    retrievedSolution.elapsedTimeOption should be(Some(elapsedTime))
   }
 }

@@ -22,6 +22,8 @@
 
 package info.gianlucacosta.twobinmanager.db
 
+import java.time.Duration
+
 import info.gianlucacosta.twobinpack.core._
 
 import scala.collection.JavaConversions._
@@ -179,8 +181,9 @@ object DbConversions {
       new SolutionEntity(
         solution.id,
         solution.problem,
-        solution.blocks.map(convertAnchoredBlock),
-        solution.solverOption.orNull
+        solution.solverOption.orNull,
+        solution.elapsedTimeOption.map(_.getSeconds.toInt: Integer).orNull,
+        solution.blocks.map(convertAnchoredBlock)
       )
 
 
@@ -197,9 +200,22 @@ object DbConversions {
         else
           None
 
+
+      val elapsedTimeOption: Option[Duration] =
+        if (solutionEntity.getElapsedTimeInSeconds != null)
+          Some(
+            Duration.ofSeconds(
+              solutionEntity.getElapsedTimeInSeconds.toInt
+            )
+          )
+        else
+          None
+
+
       Solution(
         solutionEntity.getProblem,
         solverOption,
+        elapsedTimeOption,
         solutionEntity.getBlocks.map(convertAnchoredBlockValue).toSet,
         solutionEntity.getId
       )

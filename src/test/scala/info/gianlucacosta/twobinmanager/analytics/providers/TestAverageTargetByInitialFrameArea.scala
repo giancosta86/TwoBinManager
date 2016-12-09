@@ -70,6 +70,7 @@ class TestAverageTargetByInitialFrameArea extends FlatSpec with Matchers with Be
       Solution(
         problem,
         None,
+        None,
 
         Set(
           AnchoredBlock(
@@ -102,6 +103,7 @@ class TestAverageTargetByInitialFrameArea extends FlatSpec with Matchers with Be
       Solution(
         problem,
         None,
+        None,
 
         Set()
       ),
@@ -109,6 +111,7 @@ class TestAverageTargetByInitialFrameArea extends FlatSpec with Matchers with Be
 
       Solution(
         problem,
+        None,
         None,
 
         Set(
