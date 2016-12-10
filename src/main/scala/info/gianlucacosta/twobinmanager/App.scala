@@ -39,10 +39,13 @@ import scalafx.application.Platform
 
 
 object App {
+  private val MajorVersion =
+    ArtifactInfo.version.split('.').head
+
   val Directory: File =
     new File(
       DesktopUtils.homeDirectory.get,
-      s".${ArtifactInfo.name}"
+      s".${ArtifactInfo.name}${MajorVersion}"
     )
 
 
