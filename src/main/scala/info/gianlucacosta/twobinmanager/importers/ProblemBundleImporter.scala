@@ -22,31 +22,79 @@
 
 package info.gianlucacosta.twobinmanager.importers
 
-import java.io.{BufferedReader, File, FileReader}
+import java.io.{BufferedReader, File, StringReader}
+import java.nio.charset.Charset
+import java.nio.file.Files
+import java.util.regex.Pattern
 
-import info.gianlucacosta.twobinmanager.sdk.importers.ProblemImporter
 import info.gianlucacosta.twobinmanager.sdk.io.OutputWriter
 import info.gianlucacosta.twobinpack.core.Problem
 import info.gianlucacosta.twobinpack.io.FileExtensions
-import info.gianlucacosta.twobinpack.io.bundle.ProblemBundleReader
+
+import scala.annotation.tailrec
+
+
+object ProblemBundleImporter {
+  private val durationInMinutesTagPattern =
+    Pattern.compile(
+      "<timeLimitInMinutesOption class=\"some\">\\s*<x class=\"int\">(\\d+)<\\/x>\\s*<\\/timeLimitInMinutesOption>"
+    )
+}
 
 /**
-  * Imports problem bundles
+  * Imports problem bundles - according to version 1 of the document format
   */
-class ProblemBundleImporter extends ProblemImporter {
+class ProblemBundleImporter extends ProblemBundleImporterBase {
   override protected def readProblems(file: File, outputWriter: OutputWriter): Set[Problem] = {
-    val problemBundleReader =
-      new ProblemBundleReader(new BufferedReader(new FileReader(file)))
+    val updatedFileContent =
+      replaceTimeLimitInMinutesTag(file)
 
-    try {
-      val problemBundle =
-        problemBundleReader.readProblemBundle()
+    val sourceReader =
+      new BufferedReader(
+        new StringReader(
+          updatedFileContent
+        )
+      )
 
-      problemBundle.problems.toSet
-    } finally {
-      problemBundleReader.close()
+    readProblemsInBundle(sourceReader)
+  }
+
+
+  private def replaceTimeLimitInMinutesTag(file: File): String = {
+    val sourceBytes =
+      Files.readAllBytes(file.toPath)
+
+    val fileContent =
+      new String(sourceBytes, Charset.forName("utf-8"))
+
+    replaceTimeLimitInMinutesTag(fileContent)
+  }
+
+
+  @tailrec
+  private def replaceTimeLimitInMinutesTag(cumulatedFileContent: String): String = {
+    val matcher =
+      ProblemBundleImporter.durationInMinutesTagPattern.matcher(cumulatedFileContent)
+
+    if (matcher.find()) {
+      val timeLimitInMinutes =
+        matcher.group(1).toInt
+
+      val timeLimitInSeconds =
+        timeLimitInMinutes * 60
+
+      val replacementTag =
+        "<timeLimitOption class=\"some\"><x class=\"java.time.Duration\">" + timeLimitInSeconds + "</x></timeLimitOption>"
+
+      val updatedFileContent =
+        matcher.replaceFirst(replacementTag)
+
+      replaceTimeLimitInMinutesTag(
+        updatedFileContent
+      )
+    } else {
+      cumulatedFileContent
     }
-
   }
 
   override def canImport(file: File): Boolean =
