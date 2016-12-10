@@ -44,6 +44,7 @@ abstract class ProblemBundleImporterBase extends ProblemImporter {
 
   /**
     * Employs a ProblemBundleReader to read a ProblemBundle and get its set of problems
+    *
     * @param sourceReader The source reader
     * @return The set of problems in the parsed problem bundle
     */
