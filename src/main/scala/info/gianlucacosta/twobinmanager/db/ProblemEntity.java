@@ -65,7 +65,7 @@ public class ProblemEntity {
     @Column(
             nullable = true
     )
-    private Integer timeLimitInMinutes;
+    private Integer timeLimitInSeconds;
 
     @Column(
             nullable = false
@@ -136,7 +136,7 @@ public class ProblemEntity {
             int initialFrameHeight,
             int frameMode,
 
-            Integer timeLimitInMinutes,
+            Integer timeLimitInSeconds,
             boolean canRotateBlocks,
             int resolution,
 
@@ -147,7 +147,7 @@ public class ProblemEntity {
         this.initialFrameWidth = initialFrameWidth;
         this.initialFrameHeight = initialFrameHeight;
         this.frameMode = frameMode;
-        this.timeLimitInMinutes = timeLimitInMinutes;
+        this.timeLimitInSeconds = timeLimitInSeconds;
         this.canRotateBlocks = canRotateBlocks;
         this.resolution = resolution;
 
@@ -181,8 +181,8 @@ public class ProblemEntity {
         return frameMode;
     }
 
-    public Integer getTimeLimitInMinutes() {
-        return timeLimitInMinutes;
+    public Integer getTimeLimitInSeconds() {
+        return timeLimitInSeconds;
     }
 
     public boolean isCanRotateBlocks() {
@@ -213,13 +213,13 @@ public class ProblemEntity {
                 resolution == that.resolution &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(timeLimitInMinutes, that.timeLimitInMinutes) &&
+                Objects.equals(timeLimitInSeconds, that.timeLimitInSeconds) &&
                 Objects.equals(blockPoolItems, that.blockPoolItems) &&
                 Objects.equals(blockColorsPool, that.blockColorsPool);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, initialFrameWidth, initialFrameHeight, frameMode, timeLimitInMinutes, canRotateBlocks, resolution, blockPoolItems, blockColorsPool);
+        return Objects.hash(id, name, initialFrameWidth, initialFrameHeight, frameMode, timeLimitInSeconds, canRotateBlocks, resolution, blockPoolItems, blockColorsPool);
     }
 }
