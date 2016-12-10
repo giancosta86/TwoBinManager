@@ -35,10 +35,19 @@ import scala.annotation.tailrec
 
 
 object ProblemBundleImporter {
-  private val durationInMinutesTagPattern =
-    Pattern.compile(
-      "<timeLimitInMinutesOption class=\"some\">\\s*<x class=\"int\">(\\d+)<\\/x>\\s*<\\/timeLimitInMinutesOption>"
-    )
+
+  private object DurationInMinutesPatterns {
+    val someTagPattern =
+      Pattern.compile(
+        "<timeLimitInMinutesOption class=\"some\">\\s*<x class=\"int\">(\\d+)<\\/x>\\s*<\\/timeLimitInMinutesOption>"
+      )
+
+    val noneTagPattern =
+      Pattern.compile(
+        "<timeLimitInMinutesOption class=\"none\".*\\/>"
+      )
+  }
+
 }
 
 /**
@@ -73,12 +82,12 @@ class ProblemBundleImporter extends ProblemBundleImporterBase {
 
   @tailrec
   private def replaceTimeLimitInMinutesTag(cumulatedFileContent: String): String = {
-    val matcher =
-      ProblemBundleImporter.durationInMinutesTagPattern.matcher(cumulatedFileContent)
+    val someTagMatcher =
+      ProblemBundleImporter.DurationInMinutesPatterns.someTagPattern.matcher(cumulatedFileContent)
 
-    if (matcher.find()) {
+    if (someTagMatcher.find()) {
       val timeLimitInMinutes =
-        matcher.group(1).toInt
+        someTagMatcher.group(1).toInt
 
       val timeLimitInSeconds =
         timeLimitInMinutes * 60
@@ -87,13 +96,16 @@ class ProblemBundleImporter extends ProblemBundleImporterBase {
         "<timeLimitOption class=\"some\"><x class=\"java.time.Duration\">" + timeLimitInSeconds + "</x></timeLimitOption>"
 
       val updatedFileContent =
-        matcher.replaceFirst(replacementTag)
+        someTagMatcher.replaceFirst(replacementTag)
 
       replaceTimeLimitInMinutesTag(
         updatedFileContent
       )
     } else {
-      cumulatedFileContent
+      val noneTagMatcher =
+        ProblemBundleImporter.DurationInMinutesPatterns.noneTagPattern.matcher(cumulatedFileContent)
+
+      noneTagMatcher.replaceAll("<timeLimitOption class=\"none\"/>")
     }
   }
 
