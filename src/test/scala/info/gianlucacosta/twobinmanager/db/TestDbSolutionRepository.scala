@@ -26,6 +26,7 @@ import java.time.Duration
 import java.util.UUID
 import javax.persistence.{PersistenceException, RollbackException}
 
+import info.gianlucacosta.helios.Includes._
 import info.gianlucacosta.helios.jpa.Includes._
 import info.gianlucacosta.twobinmanager.db.DbConversions._
 import info.gianlucacosta.twobinpack.core.Problem
@@ -199,12 +200,17 @@ class TestDbSolutionRepository extends DbTestBase {
 
   "Saving a solution whose elapsed time is more than 1 hour" should "work" in {
     val problem =
-      ProblemA.copy(timeLimitInMinutesOption = Some(60 * 5))
+      ProblemA.copy(
+        timeLimitOption =
+          Some(
+            Duration.ofHours(5)
+          )
+      )
 
     problemRepository.add(problem)
 
-    val elapsedTime =
-      Duration.ofHours(3).plus(Duration.ofMinutes(19)).plus(Duration.ofSeconds(42))
+    val elapsedTime: Duration =
+      Duration.ofHours(3) + Duration.ofMinutes(19) + Duration.ofSeconds(42)
 
     val solution =
       SolutionA1.copy(
@@ -223,12 +229,17 @@ class TestDbSolutionRepository extends DbTestBase {
 
   "Retrieving a solution whose elapsed time is more than 1 hour" should "work" in {
     val problem =
-      ProblemA.copy(timeLimitInMinutesOption = Some(60 * 5))
+      ProblemA.copy(
+        timeLimitOption =
+          Some(
+            Duration.ofHours(5)
+          )
+      )
 
     problemRepository.add(problem)
 
-    val elapsedTime =
-      Duration.ofHours(3).plus(Duration.ofMinutes(19)).plus(Duration.ofSeconds(42))
+    val elapsedTime: Duration =
+      Duration.ofHours(3) + Duration.ofMinutes(19) + Duration.ofSeconds(42)
 
     val solution =
       SolutionA1.copy(
@@ -252,12 +263,12 @@ class TestDbSolutionRepository extends DbTestBase {
 
   "Retrieving a solution whose elapsed time is the max time limit supported by a problem" should "work" in {
     val problem =
-      ProblemA.copy(timeLimitInMinutesOption = Some(Problem.MaxTimeLimitInMinutes))
+      ProblemA.copy(timeLimitOption = Some(Problem.MaxTimeLimit))
 
     problemRepository.add(problem)
 
     val elapsedTime =
-      Duration.ofMinutes(Problem.MaxTimeLimitInMinutes)
+      Problem.MaxTimeLimit
 
     val solution =
       SolutionA1.copy(

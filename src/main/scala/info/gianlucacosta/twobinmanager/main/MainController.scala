@@ -23,6 +23,7 @@
 package info.gianlucacosta.twobinmanager.main
 
 import java.io.{File, FileWriter}
+import java.time.Duration
 import javafx.fxml.FXML
 import javafx.stage.Stage
 
@@ -211,9 +212,11 @@ class MainController {
         val newTimeLimitInMinutesOption =
           InputDialogs.askForLong(
             "Time limit in minutes (0 = no limit):",
-            problem.timeLimitInMinutesOption.getOrElse(0).toLong,
+            problem.timeLimitOption
+              .map(_.toMinutes)
+              .getOrElse(0),
             0,
-            Problem.MaxTimeLimitInMinutes
+            Problem.MaxTimeLimit.toMinutes
           )
 
         newTimeLimitInMinutesOption.foreach(newTimeLimitInMinutes => {
@@ -237,9 +240,11 @@ class MainController {
                       resolution.toInt
                   ),
 
-                timeLimitInMinutesOption =
+                timeLimitOption =
                   if (newTimeLimitInMinutes > 0)
-                    Some(newTimeLimitInMinutes.toInt)
+                    Some(
+                      Duration.ofMinutes(newTimeLimitInMinutes)
+                    )
                   else
                     None
               )

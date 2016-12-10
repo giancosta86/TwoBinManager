@@ -135,14 +135,14 @@ class TestDbProblemRepository extends DbTestBase {
 
 
   "Adding a problem having no time limit" should "work" in {
-    require(ProblemB.timeLimitInMinutesOption.isEmpty)
+    require(ProblemB.timeLimitOption.isEmpty)
 
     problemRepository.add(ProblemB)
   }
 
 
   "Retrieving a problem having no time limit" should "work" in {
-    require(ProblemB.timeLimitInMinutesOption.isEmpty)
+    require(ProblemB.timeLimitOption.isEmpty)
 
     problemRepository.add(ProblemB)
 

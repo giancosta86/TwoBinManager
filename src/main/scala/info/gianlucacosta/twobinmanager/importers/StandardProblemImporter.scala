@@ -23,6 +23,7 @@
 package info.gianlucacosta.twobinmanager.importers
 
 import java.io.{BufferedReader, File, FileReader}
+import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.Semaphore
 
@@ -111,7 +112,7 @@ class StandardProblemImporter extends ProblemImporter {
                       "Time limit in minutes (0 = unlimited):",
                       5,
                       0,
-                      Problem.MaxTimeLimitInMinutes,
+                      Problem.MaxTimeLimit.toMinutes,
                       header = problemDialogHeader
                     )
 
@@ -130,7 +131,9 @@ class StandardProblemImporter extends ProblemImporter {
                       FrameTemplate.SuggestedBlockColorsPool,
                       canRotateBlocks,
                       resolution.toInt,
-                      actualTimeLimitInMinutesOption
+                      actualTimeLimitInMinutesOption.map(actualTimeLimitInMinutes =>
+                        Duration.ofMinutes(actualTimeLimitInMinutes)
+                      )
                     )
                   })
                 })

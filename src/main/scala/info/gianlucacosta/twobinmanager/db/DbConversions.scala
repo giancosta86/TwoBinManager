@@ -105,7 +105,10 @@ object DbConversions {
         problem.frameTemplate.initialDimension.height,
         FrameMode.All.indexOf(problem.frameTemplate.frameMode),
 
-        problem.timeLimitInMinutesOption.map(value => value: Integer).getOrElse(null: Integer),
+        problem.timeLimitOption
+          .map(timeLimit => timeLimit.getSeconds.toInt: Integer)
+          .getOrElse(null: Integer),
+
         problem.frameTemplate.blockPool.canRotateBlocks,
         problem.frameTemplate.resolution,
 
@@ -160,13 +163,17 @@ object DbConversions {
           problemEntity.getResolution
         )
 
-      val timeLimitInMinutesOption: Option[Int] =
-        Option(problemEntity.getTimeLimitInMinutes).asInstanceOf[Option[Int]]
+      val timeLimitOption: Option[Duration] =
+        if (problemEntity.getTimeLimitInSeconds != null)
+          Some(Duration.ofSeconds(problemEntity.getTimeLimitInSeconds.toLong))
+        else
+          None
+
 
 
       Problem(
         frameTemplate,
-        timeLimitInMinutesOption,
+        timeLimitOption,
         problemEntity.getName,
         problemEntity.getId
       )

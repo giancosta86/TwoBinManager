@@ -22,6 +22,7 @@
 
 package info.gianlucacosta.twobinmanager
 
+import info.gianlucacosta.helios.Includes._
 import info.gianlucacosta.helios.apps.AppInfo
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.stage.StackedStage
@@ -111,9 +112,9 @@ class ProblemViewStage(appInfo: AppInfo, val previousStage: javafx.stage.Stage, 
 
                 new BasicFormTextField(
                   "Time limit:",
-                  problem.timeLimitInMinutesOption match {
-                    case Some(timeLimitInMinutes) =>
-                      s"${timeLimitInMinutes} minutes"
+                  problem.timeLimitOption match {
+                    case Some(timeLimit) =>
+                      timeLimit.digitalFormat
 
                     case None =>
                       "(no time limit)"
