@@ -27,6 +27,7 @@ import java.time.Duration
 import javafx.fxml.FXML
 import javafx.stage.Stage
 
+import info.gianlucacosta.helios.Includes._
 import info.gianlucacosta.helios.apps.AppInfo
 import info.gianlucacosta.helios.desktop.DesktopUtils
 import info.gianlucacosta.helios.fx.Includes._
@@ -43,6 +44,7 @@ import info.gianlucacosta.twobinpack.io.repositories.{ProblemRepository, Solutio
 import info.gianlucacosta.twobinpack.io.standard.StandardProblemWriter
 import info.gianlucacosta.twobinpack.io.{FileExtensions, ProblemNameDialogs}
 
+import scala.annotation.tailrec
 import scalafx.Includes._
 import scalafx.application.Platform
 import scalafx.scene.control.Alert.AlertType
@@ -207,17 +209,9 @@ class MainController {
       val newProblemNameOption =
         problemNameDialogs.askForNewProblemName(problem, "Edit problem...")
 
-
       newProblemNameOption.foreach(newProblemName => {
         val newTimeLimitInMinutesOption =
-          InputDialogs.askForLong(
-            "Time limit in minutes (0 = no limit):",
-            problem.timeLimitOption
-              .map(_.toMinutes)
-              .getOrElse(0),
-            0,
-            Problem.MaxTimeLimit.toMinutes
-          )
+          askForNewTimeLimitInMinutes(problem)
 
         newTimeLimitInMinutesOption.foreach(newTimeLimitInMinutes => {
           val resolutionOption =
@@ -256,6 +250,43 @@ class MainController {
         })
       })
     })
+  }
+
+  @tailrec
+  private def askForNewTimeLimitInMinutes(problem: Problem): Option[Int] = {
+    if (problem.timeLimitOption.isEmpty)
+      Some(0)
+    else {
+      val requestedMinutesOption =
+        InputDialogs.askForLong(
+          "Time limit in minutes (0 = no limit):",
+          problem.timeLimitOption
+            .map(_.toMinutes)
+            .getOrElse(0),
+          0,
+          Problem.MaxTimeLimit.toMinutes
+        ).map(_.toInt)
+
+
+      requestedMinutesOption match {
+        case Some(requestedMinutes) =>
+          if (requestedMinutes == 0)
+            Some(0)
+          else {
+            val requestedTimeLimit =
+              Duration.ofMinutes(requestedMinutes)
+
+            if (requestedTimeLimit < problem.timeLimitOption.get) {
+              Alerts.showWarning("The time limit can only be increased or removed!")
+              askForNewTimeLimitInMinutes(problem)
+            } else
+              requestedMinutesOption
+          }
+
+        case None =>
+          None
+      }
+    }
   }
 
 
