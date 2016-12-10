@@ -88,7 +88,7 @@ class MainController {
 
   private val problemBundleFileChooser = new FileChooser {
     extensionFilters.setAll(
-      new FileChooser.ExtensionFilter("Problem bundle", s"*${FileExtensions.ProblemBundle}")
+      new FileChooser.ExtensionFilter("Problem bundle", s"*${FileExtensions.ProblemBundle_v2}")
     )
 
     title =
