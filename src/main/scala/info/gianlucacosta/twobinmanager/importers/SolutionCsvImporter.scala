@@ -29,7 +29,7 @@ import info.gianlucacosta.twobinpack.io.csv.SolutionCsvReader
 import info.gianlucacosta.twobinpack.io.repositories.ProblemRepository
 
 /**
-  * Imports one or more solutions from a dedicated CSV file
+  * Imports one or more solutions from a dedicated CSV file - according to version 1 of the document format
   */
 class SolutionCsvImporter extends SolutionCsvImporterBase[SolutionCsvReader] {
   override protected def createSolutionsReader(sourceReader: BufferedReader, problemRepository: ProblemRepository): SolutionCsvReader =
