@@ -22,8 +22,10 @@
 
 package info.gianlucacosta.twobinmanager
 
+import java.time.Duration
 import javafx.beans.property.SimpleObjectProperty
 
+import info.gianlucacosta.helios.Includes._
 import info.gianlucacosta.helios.apps.AppInfo
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.stage.StackedStage
@@ -37,7 +39,7 @@ import scalafx.beans.binding.Bindings
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.{ListView, ScrollPane}
-import scalafx.scene.layout.BorderPane
+import scalafx.scene.layout.{BorderPane, HBox}
 
 /**
   * Stage showing solutions for a problem
@@ -125,25 +127,87 @@ class SolutionsViewStage(appInfo: AppInfo, val previousStage: javafx.stage.Stage
       solutionsListView.selectionModel.value.selectedItem
     )
 
+
+  private val elapsedTimeOption =
+    new SimpleObjectProperty[Option[Duration]](None)
+
+  elapsedTimeOption <==
+    Bindings.createObjectBinding[Option[Duration]](
+      () => {
+        val solution =
+          solutionsListView.selectionModel.value.selectedItem()
+
+        if (solution != null)
+          solution.elapsedTimeOption
+        else
+          None
+      },
+
+      solutionsListView.selectionModel.value.selectedItem
+    )
+
+
   private val solutionPane =
     new BorderPane {
       top =
-        new BasicFormTextField("Target:") {
-          fieldValue <==
-            Bindings.createStringBinding(
-              () => Solution.formatTarget(
-                targetOption()
-              ),
-
-              targetOption
-            )
-
-
+        new HBox {
           padding =
             Insets(20)
 
-          visible <==
-            solutionsListView.selectionModel.value.selectedItem =!= null
+
+          spacing =
+            20
+
+          children =
+            List(
+              new BasicFormTextField("Target:") {
+                fieldValue <==
+                  Bindings.createStringBinding(
+                    () => Solution.formatTarget(
+                      targetOption()
+                    ),
+
+                    targetOption
+                  )
+
+                visible <==
+                  solutionsListView.selectionModel.value.selectedItem =!= null
+              },
+
+
+              new BasicFormTextField("Time elapsed:") {
+                fieldValue <==
+                  Bindings.createStringBinding(
+                    () => {
+                      elapsedTimeOption()
+                        .map(elapsedTime =>
+                          elapsedTime.digitalFormat
+                        )
+                        .getOrElse(
+                          "(not available)"
+                        )
+                    },
+
+                    elapsedTimeOption
+                  )
+
+                visible <==
+                  solutionsListView.selectionModel.value.selectedItem =!= null
+              },
+
+
+              new BasicFormTextField("Time limit:") {
+                fieldValue =
+                  problem.timeLimitOption
+                    .map(timeLimit =>
+                      timeLimit.digitalFormat
+                    )
+                    .getOrElse("(no time limit)")
+
+                visible <==
+                  solutionsListView.selectionModel.value.selectedItem =!= null
+              }
+            )
         }
 
       center =
