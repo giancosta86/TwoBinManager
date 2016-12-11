@@ -33,7 +33,7 @@ import info.gianlucacosta.twobinpack.rendering.gallery.BlockGalleryPane
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.ScrollPane
-import scalafx.scene.layout.{BorderPane, VBox}
+import scalafx.scene.layout.{BorderPane, HBox, VBox}
 
 /**
   * Stage showing a problem
@@ -80,51 +80,74 @@ class ProblemViewStage(appInfo: AppInfo, val previousStage: javafx.stage.Stage, 
                   problem.name
                 ),
 
-                new BasicFormTextField(
-                  "Id:",
-                  problem.id
-                ),
 
-                new BasicFormTextField(
-                  "Frame mode:",
-                  problem.frameTemplate.frameMode
-                ),
+                new HBox {
+                  spacing =
+                    35
 
-                new BasicFormTextField(
-                  "Initial frame dimension:",
-                  s"${problem.frameTemplate.initialDimension.width} x ${problem.frameTemplate.initialDimension.height} units"
-                ),
+                  children =
+                    List(
+                      new VBox {
+                        spacing =
+                          15
 
-                new BasicFormTextField(
-                  "Block dimensions:",
-                  s"${problem.frameTemplate.blockPool.blockDimensions.size}"
-                ),
+                        children = List(
+                          new BasicFormTextField(
+                            "Id:",
+                            problem.id
+                          ),
 
-                new BasicFormTextField(
-                  "Total blocks:",
-                  s"${problem.frameTemplate.blockPool.totalBlockCount}"
-                ),
+                          new BasicFormTextField(
+                            "Frame mode:",
+                            problem.frameTemplate.frameMode
+                          ),
 
-                new BasicFormTextField(
-                  "Can rotate blocks?",
-                  problem.frameTemplate.blockPool.canRotateBlocks
-                ),
+                          new BasicFormTextField(
+                            "Initial frame dimension:",
+                            s"${problem.frameTemplate.initialDimension.width} x ${problem.frameTemplate.initialDimension.height} units"
+                          ),
 
-                new BasicFormTextField(
-                  "Time limit:",
-                  problem.timeLimitOption match {
-                    case Some(timeLimit) =>
-                      timeLimit.digitalFormat
+                          new BasicFormTextField(
+                            "Block dimensions:",
+                            s"${problem.frameTemplate.blockPool.blockDimensions.size}"
+                          )
+                        )
+                      },
 
-                    case None =>
-                      "(no time limit)"
-                  }
-                ),
 
-                new BasicFormTextField(
-                  "Resolution:",
-                  s"${problem.frameTemplate.resolution} pixels per unit"
-                )
+                      new VBox {
+                        spacing = 15
+
+                        children = List(
+                          new BasicFormTextField(
+                            "Can rotate blocks?",
+                            problem.frameTemplate.blockPool.canRotateBlocks
+                          ),
+
+                          new BasicFormTextField(
+                            "Time limit:",
+                            problem.timeLimitOption match {
+                              case Some(timeLimit) =>
+                                timeLimit.digitalFormat
+
+                              case None =>
+                                "(no time limit)"
+                            }
+                          ),
+
+                          new BasicFormTextField(
+                            "Resolution:",
+                            s"${problem.frameTemplate.resolution} pixels per unit"
+                          ),
+
+                          new BasicFormTextField(
+                            "Total blocks:",
+                            s"${problem.frameTemplate.blockPool.totalBlockCount}"
+                          )
+                        )
+                      }
+                    )
+                }
               )
             }
 
