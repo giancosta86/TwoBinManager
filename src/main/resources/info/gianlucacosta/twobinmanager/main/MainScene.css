@@ -30,14 +30,14 @@
 }
 
 #titlePane {
-    -fx-background-color: #ffecb7;
+    -fx-background-color: #ffa7a7;
 }
 
 
 #titleLabel {
     -fx-font-weight: bold;
     -fx-font-size: 40;
-    -fx-text-fill: #ffbe0d;
+    -fx-text-fill: #ae4f4f;
 }
 
 
@@ -61,7 +61,7 @@
 
 
 #importPane {
-    -fx-background-color: #feff81;
+    -fx-background-color: #feffa9;
 }
 
 
