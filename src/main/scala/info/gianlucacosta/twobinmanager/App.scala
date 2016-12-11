@@ -56,7 +56,7 @@ object App {
     )
 
 
-  private var pluginsRegistry: AtomicReference[PluginsRegistry] =
+  private val pluginsRegistry: AtomicReference[PluginsRegistry] =
     new AtomicReference[PluginsRegistry](null)
 
   def PluginsRegistry: PluginsRegistry =
