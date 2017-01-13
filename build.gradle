@@ -55,7 +55,7 @@ version = '2.1-SNAPSHOT'
 
 description = 'Management application for two-dimensional packing'
 
-ext.facebookPage = "https://www.facebook.com/TwoBinPack-234021307010796"
+ext.facebookPage = "https://www.facebook.com/TwoBinPack/"
 
 
 mainClassName = "info.gianlucacosta.twobinmanager.App"
