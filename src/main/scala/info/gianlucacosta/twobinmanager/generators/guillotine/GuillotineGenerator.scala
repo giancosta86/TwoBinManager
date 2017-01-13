@@ -27,6 +27,11 @@ import javafx.stage.Stage
 import info.gianlucacosta.twobinmanager.sdk.generators.ProblemGenerator
 import info.gianlucacosta.twobinpack.io.repositories.ProblemRepository
 
+object GuillotineGenerator {
+  val Name: String =
+    "Guillotine random generator"
+}
+
 /**
   * Guillotine random generator
   */
@@ -39,5 +44,5 @@ class GuillotineGenerator extends ProblemGenerator {
   }
 
   override def name: String =
-    "Guillotine random generator"
+    GuillotineGenerator.Name
 }

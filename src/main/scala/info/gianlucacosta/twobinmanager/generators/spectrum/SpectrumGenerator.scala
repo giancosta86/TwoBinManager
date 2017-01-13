@@ -27,6 +27,12 @@ import javafx.stage.Stage
 import info.gianlucacosta.twobinmanager.sdk.generators.ProblemGenerator
 import info.gianlucacosta.twobinpack.io.repositories.ProblemRepository
 
+object SpectrumGenerator {
+  val Name: String =
+    "Spectrum strip random generator"
+}
+
+
 /**
   * Spectrum random generator
   */
@@ -38,6 +44,7 @@ class SpectrumGenerator extends ProblemGenerator {
     spectrumStage.show()
   }
 
+
   override def name: String =
-    "Spectrum strip random generator"
+    SpectrumGenerator.Name
 }

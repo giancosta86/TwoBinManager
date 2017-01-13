@@ -38,5 +38,5 @@ private class GuillotineStage(previousStage: Stage, problemRepository: ProblemRe
     classOf[GuillotineController],
     previousStage,
     problemRepository,
-    "Guillotine random generator"
+    GuillotineGenerator.Name
   )

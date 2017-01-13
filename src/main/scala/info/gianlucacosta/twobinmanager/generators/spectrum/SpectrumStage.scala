@@ -38,5 +38,5 @@ private class SpectrumStage(previousStage: Stage, problemRepository: ProblemRepo
     classOf[SpectrumController],
     previousStage,
     problemRepository,
-    "Spectrum strip random generator"
+    SpectrumGenerator.Name
   )
