@@ -22,23 +22,17 @@
 
 package info.gianlucacosta.twobinmanager.generators.spectrum
 
-import javafx.concurrent.Task
 import javafx.fxml.FXML
 
-import info.gianlucacosta.helios.fx.dialogs.Alerts
 import info.gianlucacosta.twobinmanager.generators.spectrum.algorithm.SpectrumAlgorithm
-import info.gianlucacosta.twobinmanager.sdk.generators.GeneratorFxmlController
-import info.gianlucacosta.twobinmanager.util.BasicFormTextField
+import info.gianlucacosta.twobinmanager.generators.spectrumbase.SpectrumControllerBase
 import info.gianlucacosta.twobinpack.core._
-import info.gianlucacosta.twobinpack.rendering.gallery.BlockGalleryPane
 
 import scalafx.Includes._
-import scalafx.scene.Cursor
-import scalafx.scene.control.Alert.AlertType
 
-private class SpectrumController extends GeneratorFxmlController {
+private class SpectrumController extends SpectrumControllerBase {
 
-  private class BlockPoolTask extends Task[BlockPool] {
+  private class SpectrumTask extends BlockPoolTask {
     override def call(): BlockPool = {
       val minBlockWidth =
         minBlockWidthField.text().toInt
@@ -76,10 +70,8 @@ private class SpectrumController extends GeneratorFxmlController {
       val blockQuantityRange =
         Range.inclusive(minBlockQuantity, maxBlockQuantity)
 
-
       val canRotateBlocks =
         canRotateCheckBox.isSelected
-
 
       SpectrumAlgorithm.createRandomPool(
         minBlockDimension,
@@ -88,136 +80,11 @@ private class SpectrumController extends GeneratorFxmlController {
         canRotateBlocks
       )
     }
-
-    override def succeeded(): Unit = {
-      blockPool =
-        this.get
-
-      scene.cursor =
-        Cursor.Default
-    }
-
-    override def failed(): Unit = {
-      scene.cursor =
-        Cursor.Default
-
-      Alerts.showException(
-        this.getException.asInstanceOf[Exception],
-        alertType = AlertType.Warning
-      )
-    }
   }
 
 
-  @FXML
-  def initialize(): Unit = {
-    resolutionField.text() =
-      Problem.SuggestedResolution.toString
-  }
-
-
-  private var _blockPool: BlockPool = _
-
-  private def blockPool: BlockPool =
-    _blockPool
-
-  private def blockPool_=(newValue: BlockPool): Unit = {
-    _blockPool =
-      newValue
-
-    val colorPalette =
-      ColorPalette(
-        _blockPool,
-        FrameTemplate.SuggestedBlockColorsPool
-      )
-
-    val resolution =
-      try {
-        resolutionField.text().toInt
-      } catch {
-        case ex: Exception =>
-          Alerts.showWarning("Invalid resolution value. A default value will be used")
-
-          resolutionField.text =
-            Problem.SuggestedResolution.toString
-
-          Problem.SuggestedResolution
-      }
-
-
-    val blockGallery =
-      new BlockGallery(blockPool)
-
-    galleryScrollPane.content =
-      new BlockGalleryPane(
-        blockGallery,
-        colorPalette,
-        resolution
-      ) {
-        interactive =
-          false
-      }
-
-    saveProblemButton.disable =
-      false
-
-
-    blocksBox.children.clear()
-    blocksBox.children.addAll(
-      new BasicFormTextField(
-        "Block dimensions:",
-        blockPool.blockDimensions.size
-      ),
-
-      new BasicFormTextField(
-        "Total blocks:",
-        blockPool.totalBlockCount
-      )
-    )
-  }
-
-
-  @FXML
-  def generateBlockPool(): Unit = {
-    scene.cursor =
-      Cursor.Wait
-
-    val blockPoolTask =
-      new BlockPoolTask
-
-    new Thread(blockPoolTask) {
-      setDaemon(true)
-    }.start()
-  }
-
-
-  override protected def createFrameTemplate(): FrameTemplate = {
-    val initialFrameWidth =
-      frameWidthField.text().toInt
-
-    val initialFrameHeight =
-      frameHeightField.text().toInt
-
-
-    val initialFrameDimension =
-      FrameDimension(
-        initialFrameWidth,
-        initialFrameHeight
-      )
-
-
-    val resolution =
-      resolutionField.text().toInt
-
-
-    FrameTemplate(
-      initialFrameDimension,
-      FrameMode.Strip,
-      blockPool,
-      FrameTemplate.SuggestedBlockColorsPool,
-      resolution
-    )
-  }
+  override protected def createBlockPoolTask(): BlockPoolTask =
+    new SpectrumTask
 
 
   @FXML
@@ -225,15 +92,7 @@ private class SpectrumController extends GeneratorFxmlController {
 
 
   @FXML
-  var frameWidthField: javafx.scene.control.TextField = _
-
-  @FXML
-  var frameHeightField: javafx.scene.control.TextField = _
-
-
-  @FXML
   var minBlockWidthField: javafx.scene.control.TextField = _
-
 
   @FXML
   var minBlockHeightField: javafx.scene.control.TextField = _
@@ -241,7 +100,6 @@ private class SpectrumController extends GeneratorFxmlController {
 
   @FXML
   var maxBlockWidthField: javafx.scene.control.TextField = _
-
 
   @FXML
   var maxBlockHeightField: javafx.scene.control.TextField = _
@@ -252,21 +110,4 @@ private class SpectrumController extends GeneratorFxmlController {
 
   @FXML
   var maxBlockQuantityField: javafx.scene.control.TextField = _
-
-
-  @FXML
-  var resolutionField: javafx.scene.control.TextField = _
-
-
-  @FXML
-  var blocksBox: javafx.scene.layout.VBox = _
-
-  @FXML
-  var generateFrameButton: javafx.scene.control.Button = _
-
-  @FXML
-  var saveProblemButton: javafx.scene.control.Button = _
-
-  @FXML
-  var galleryScrollPane: javafx.scene.control.ScrollPane = _
 }
