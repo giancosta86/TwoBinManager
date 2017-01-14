@@ -153,7 +153,6 @@ class TestDbProblemRepository extends DbTestBase {
   }
 
 
-
   "Updating a new problem" should "fail" in {
     problemRepository.update(ProblemA)
   }

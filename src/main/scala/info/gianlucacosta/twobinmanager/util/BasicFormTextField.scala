@@ -56,7 +56,7 @@ class BasicFormTextField(
     * @return
     */
   def fieldValue: ObjectProperty[Any] =
-  _fieldValue
+    _fieldValue
 
   def fieldValue_=(newValue: Any): Unit =
     _fieldValue() =

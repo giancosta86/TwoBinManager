@@ -47,7 +47,7 @@ class DbConnection(entityManagerFactoryParams: (String, String)*) {
     * @return The EntityManagerFactory, or null if the connection is closed
     */
   def entityManagerFactory: EntityManagerFactory =
-  _entityManagerFactory
+    _entityManagerFactory
 
 
   /**

@@ -155,7 +155,7 @@ object GuillotineAlgorithm {
           (
             List[Row](),
             0
-            )
+          )
         ) {
           case ((cumulatedRows, currentTop), rowSegment) =>
             val currentHeight =
@@ -173,7 +173,7 @@ object GuillotineAlgorithm {
             (
               row :: cumulatedRows,
               currentTop + currentHeight
-              )
+            )
         }._1
 
 
@@ -187,7 +187,7 @@ object GuillotineAlgorithm {
             (
               List[Column](),
               0
-              )
+            )
           ) {
             case ((cumulatedRowColumns, currentLeft), columnSegment) =>
               val currentWidth =
@@ -207,7 +207,7 @@ object GuillotineAlgorithm {
               (
                 column :: cumulatedRowColumns,
                 currentLeft + currentWidth
-                )
+              )
           }._1
       })
 
@@ -245,7 +245,7 @@ object GuillotineAlgorithm {
             (
               block :: cumulatedColumnBlocks,
               currentTopWithinRow + currentBlockHeight
-              )
+            )
         }._1
       })
 

@@ -109,13 +109,13 @@ class AnalyticsStage(
     * analytics dimension that was chosen since when the stage was shown
     */
   private var chartCache: Map[String, Option[Chart]] =
-  Map()
+    Map()
 
   /**
     * Stores the intermediate cache shared by ChartRetriever functions
     */
   private var intermediateCache: IntermediateCache =
-  Map()
+    Map()
 
 
   private val noChartLabel =
