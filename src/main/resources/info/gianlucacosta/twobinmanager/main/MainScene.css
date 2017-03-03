@@ -42,7 +42,7 @@
 
 
 #problemsPane {
-   -fx-background-color: #c3ffbd;
+   -fx-background-color: #ddffda;
 }
 
 
@@ -52,7 +52,7 @@
 
 
 #solutionsPane {
-    -fx-background-color: #d7fffe;
+    -fx-background-color: #e9fffe;
 }
 
 #solutionsHeader {
@@ -70,19 +70,32 @@
 }
 
 #importLabel {
-    -fx-background-color: #ffffd6;
+    -fx-background-color: #ffffd9;
     -fx-font-style: italic;
     -fx-text-fill: darkgray;
 }
 
 
+
+#serverPane {
+    -fx-background-color: #ffe8b1;
+}
+
+#serverHeader {
+    -fx-text-fill: #cf8400;
+}
+
+
+
 #analyticsPane {
-    -fx-background-color: #ffddfc;
+    -fx-background-color: #ffdafb;
 }
 
 #analyticsHeader {
     -fx-text-fill: #d78ed1;
 }
+
+
 
 #aboutPane {
     -fx-background-color: #cb9ccf;
