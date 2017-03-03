@@ -31,6 +31,8 @@ TwoBinManager is designed to be user-friendly and very intuitive; however, in ca
 
 ## Screenshots
 
+![Server management](images/screenshots/ServerStage.png)
+
 ![View problem](images/screenshots/ViewProblemStage.png)
 
 ![View solutions](images/screenshots/ViewSolutionsStage.png)
@@ -38,6 +40,8 @@ TwoBinManager is designed to be user-friendly and very intuitive; however, in ca
 
 
 ## Further references
+
+* [TwoBinManager - SDK](https://github.com/giancosta86/TwoBinManager-sdk)
 
 * [TwoBinGame](https://github.com/giancosta86/TwoBinGame)
 
