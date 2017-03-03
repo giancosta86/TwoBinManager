@@ -36,6 +36,7 @@ import info.gianlucacosta.helios.fx.dialogs.{Alerts, BusyDialog, InputDialogs}
 import info.gianlucacosta.twobinmanager.analytics.AnalyticsStage
 import info.gianlucacosta.twobinmanager.importers.ImportService
 import info.gianlucacosta.twobinmanager.sdk.analytics.ChartRetriever
+import info.gianlucacosta.twobinmanager.server.ServerStage
 import info.gianlucacosta.twobinmanager.{App, ProblemViewStage, SolutionsViewStage}
 import info.gianlucacosta.twobinpack.core.{Problem, ProblemBundle, Solution, StandardProblem}
 import info.gianlucacosta.twobinpack.io.bundle.ProblemBundleWriter
@@ -292,10 +293,10 @@ class MainController {
 
   @FXML
   def exportProblemBundle(): Unit = {
-    val problemNamesForBundleOption: Option[List[String]] =
-      problemNameDialogs.askForExistingProblemNames(problemBundleFileChooser.title())
+    val problemBundleOption =
+      askForProblemBundle(problemBundleFileChooser.title())
 
-    problemNamesForBundleOption.foreach(problemNamesForBundle => {
+    problemBundleOption.foreach(problemBundle => {
       problemBundleFileChooser.initialFileName =
         "Problems"
 
@@ -303,14 +304,6 @@ class MainController {
         problemBundleFileChooser.smartSave(stage)
 
       if (problemBundleFile != null) {
-        val problems: List[Problem] =
-          problemNamesForBundle.map(problemName =>
-            problemRepository.findByName(problemName).get
-          )
-
-        val problemBundle =
-          ProblemBundle(problems)
-
         val problemBundleWriter =
           new ProblemBundleWriter(new FileWriter(problemBundleFile))
 
@@ -328,6 +321,19 @@ class MainController {
       }
     })
   }
+
+
+  private def askForProblemBundle(header: String): Option[ProblemBundle] =
+    problemNameDialogs
+      .askForExistingProblemNames(header)
+      .map(problemNames => {
+        val problems =
+          problemNames.map(problemName =>
+            problemRepository.findByName(problemName).get
+          )
+
+        ProblemBundle(problems)
+      })
 
 
   @FXML
@@ -514,6 +520,26 @@ class MainController {
     App.PluginsDirectory.mkdirs()
 
     DesktopUtils.openFile(App.PluginsDirectory)
+  }
+
+
+  @FXML
+  def showServerWindow(): Unit = {
+    val problemBundleOption =
+      askForProblemBundle("Define a problem bundle for the server")
+
+    problemBundleOption.foreach(problemBundle => {
+      val serverStage =
+        new ServerStage(
+          appInfo,
+          stage,
+          problemRepository,
+          solutionRepository,
+          problemBundle
+        )
+
+      serverStage.show()
+    })
   }
 
 

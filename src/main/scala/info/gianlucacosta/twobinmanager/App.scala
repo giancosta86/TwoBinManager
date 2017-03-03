@@ -36,6 +36,7 @@ import info.gianlucacosta.twobinpack.twobinmanager.ArtifactInfo
 
 import scalafx.Includes._
 import scalafx.application.Platform
+import scalafx.stage.WindowEvent
 
 
 object App {
@@ -96,13 +97,16 @@ class App extends AppBase(AuroraAppInfo(ArtifactInfo, MainIcon)) {
       primaryStage.resizable =
         false
 
-      primaryStage.setMinWidth(1000)
-      primaryStage.setMinHeight(700)
-
       primaryStage.setScene(scene)
 
       primaryStage.title =
         appInfo.name
+
+      primaryStage.onShown =
+        (event: WindowEvent) => {
+          primaryStage.sizeToScene()
+          primaryStage.centerOnScreen()
+        }
     }
   }
 

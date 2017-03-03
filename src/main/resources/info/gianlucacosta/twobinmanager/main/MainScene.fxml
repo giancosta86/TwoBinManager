@@ -25,7 +25,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="mainPane" prefHeight="605.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.101"
+<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.101"
             xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -80,6 +80,22 @@
                     <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
                     </padding>
+                </HBox>
+                <HBox fx:id="serverPane" alignment="CENTER_LEFT" prefHeight="100.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="serverHeader" styleClass="paneHeader" text="Server">
+                            <padding>
+                                <Insets right="15.0"/>
+                            </padding>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#showServerWindow" text="Manage server"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </padding>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
                 </HBox>
                 <HBox fx:id="analyticsPane" alignment="CENTER_LEFT" prefHeight="80.0" spacing="10.0">
                     <children>
